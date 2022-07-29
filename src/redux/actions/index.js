@@ -1,7 +1,10 @@
 // Coloque aqui suas actions
-const actionLogin = ( email ) => ({
-  type: 'login',
-  email,
-});
+const login = 'login';
+const actionLogin = (value) => ({
+  type: login, value });
 
-export default actionLogin;
+const wallet = 'wallet';
+const actionWallet = (valor) => ({
+  type: wallet, valor });
+
+export default { actionLogin, actionWallet };

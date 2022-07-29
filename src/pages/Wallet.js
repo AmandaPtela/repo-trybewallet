@@ -1,19 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, connect } from 'react-redux';
 
-class Wallet extends React.Component {
-  render() {
-    const { user } = this.props;
-    return (
-      <div>
-        <p>{user}</p>
-        <span>trybe</span>
-      </div>
-    )
-  }
+// Feito com consulta ao https://serfrontend.com/blog/redux-com-react-para-iniciantes/index.html
+function Wallet() {
+  // const dispatch = useDispatch();
+  const wallet = useSelector((state) => state);
+  const walletObj = Object.values(wallet);
+  const obj = Object.values(walletObj[1]);
+  console.log(obj.map((item) => item.currencies));
+
+  return (
+    <div>
+      {/* {dispatch({type: 'wallet', value: 1})} */}
+      <p>{obj.map((item) => item.currencies)}</p>
+      <span>trybe</span>
+    </div>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.userReducer.email,
-});
-export default connect(mapStateToProps)(Wallet);
+export default connect()(Wallet);
