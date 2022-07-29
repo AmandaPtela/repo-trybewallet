@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './App';
 import './index.css';
-import storeGeral from '../src/redux/store';
+import storeGeral from './redux/store';
 
 ReactDOM.render(
   <BrowserRouter>

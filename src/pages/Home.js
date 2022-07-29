@@ -4,17 +4,13 @@ import Login from './Login';
 import Wallet from './Wallet';
 
 class Home extends React.Component {
-  state = {
-    canLog: 'false',
-  }
   render() {
     return (
       <Switch>
-      <Route path="/" exact component={ Login }></Route>
-      <Route path="/wallet" component={ Wallet }></Route>
-    </Switch>
-    )
+        <Route path="/" exact component={ Login } />
+        <Route path="/carteira" component={ Wallet } />
+      </Switch>
+    );
   }
 }
-
 export default Home;
