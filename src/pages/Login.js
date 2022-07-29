@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../components/Header.css';
 
 // Feito com consulta ao https://serfrontend.com/blog/redux-com-react-para-iniciantes/index.html
 // https://react-redux.js.org/using-react-redux/connect-mapdispatch
@@ -37,13 +38,14 @@ class Login extends React.Component {
     const { dispatch } = this.props;
 
     return (
-      <div className="Login">
-        <form>
+      <div className="login">
+        <form className="form">
           <input
             data-testid="email-input"
             name="emailOk"
             value={ emailOk }
             type="text"
+            placeholder="digite seu email"
             onChange={ this.handleChange }
           />
           <input
@@ -51,6 +53,7 @@ class Login extends React.Component {
             name="passOk"
             value={ passOk }
             type="password"
+            placeholder="digite sua senha"
             onChange={ this.handleChange }
           />
           <Link to="/carteira">
