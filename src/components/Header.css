@@ -1,0 +1,28 @@
+.header, .header-off {
+  align-items: baseline;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.carteira {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}

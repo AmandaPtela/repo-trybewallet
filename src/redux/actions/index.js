@@ -4,7 +4,8 @@ const actionLogin = (value) => ({
   type: login, value });
 
 const wallet = 'wallet';
-const actionWallet = (valor) => ({
-  type: wallet, valor });
+const actionWallet = (value) => ({
+  type: wallet, value,
+});
 
 export default { actionLogin, actionWallet };

@@ -9,11 +9,14 @@ import './index.css';
 import storeGeral from './redux/store';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={ storeGeral }>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+  <React.StrictMode>
+    <BrowserRouter>
+      <Provider store={ storeGeral }>
+        <App />
+      </Provider>
+    </BrowserRouter>
+    ,
+  </React.StrictMode>,
   document.getElementById('root'),
 );
 
