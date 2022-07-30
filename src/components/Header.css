@@ -1,4 +1,4 @@
-.header, .header-off {
+.header , .header-off {
   align-items: baseline;
   color: black;
   display: flex;
@@ -17,7 +17,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 100%;
 }
 
 .carteira {

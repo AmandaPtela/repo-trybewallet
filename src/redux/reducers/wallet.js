@@ -8,11 +8,10 @@ const initialStateWallet = {
   },
 };
 
-function wallet(state = initialStateWallet, action) {
+export function wallet(state = initialStateWallet, action) {
   if (action.type === 'wallet') {
     return { [state.wallet.currencies]: action.value };
   }
   return state;
 }
-
 export default wallet;
