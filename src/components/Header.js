@@ -11,6 +11,7 @@ class Header extends React.Component {
       (user.length > 0)
         ? (
           <div className="header">
+            <span className="header-off">TrybeWallet</span>
             <p data-testid="email-field">
               {user}
             </p>
@@ -26,8 +27,8 @@ class Header extends React.Component {
 }
 const mapStateToProps = (state) => ({
   user: state.user.email,
-  despesas: state.wallet.wallet.expenses,
-  moedas: state.wallet.wallet.currencies,
+  despesas: state.wallet.expenses,
+  moedas: state.wallet.currencies,
 });
 
 Header.propTypes = {
