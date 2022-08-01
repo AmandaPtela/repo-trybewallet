@@ -82,7 +82,14 @@ class WalletForm extends React.Component {
         >
           Adicionar despesa
         </button>
-        {despesas.map((item, index) => <li key={ index }>{ item }</li>)}
+        {despesas.map((item, index) => (
+          <li
+            key={ index }
+            id={index}
+          >
+            { item }
+          </li>
+        ))}
       </div>
     );
   }
