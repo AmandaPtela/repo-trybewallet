@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 // Feito com consulta ao https://serfrontend.com/blog/redux-com-react-para-iniciantes/index.html
 class Header extends React.Component {
   render() {
-    const { user } = this.props;
+    const { user, despesas } = this.props;
+    console.log(despesas);
     return (
       (user.length > 0)
         ? (
@@ -15,7 +16,7 @@ class Header extends React.Component {
             <p data-testid="email-field">
               {user}
             </p>
-            <span data-testid="total-field">0</span>
+            <span data-testid="total-field">{despesas}</span>
             <span data-testid="header-currency-field">BRL</span>
           </div>
         )
