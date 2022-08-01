@@ -5,19 +5,35 @@ import PropTypes from 'prop-types';
 
 // Feito com consulta ao https://serfrontend.com/blog/redux-com-react-para-iniciantes/index.html
 class Header extends React.Component {
+  state = {
+    gastos: [],
+  }
+
+  componentDidMount() {
+    const { despesas } = this.props;
+    this.setState({ gastos: despesas });
+  }
+
+  componentDidUpdate() {
+    const { gastos } = this.state;
+    console.log(gastos);
+  }
+
   render() {
-    const { user, despesas } = this.props;
-    console.log(despesas);
+    const { user } = this.props;
+    // const { gastos } = this.state;
     return (
       (user.length > 0)
         ? (
           <div className="header">
-            <span className="header-off">TrybeWallet</span>
+            <span className="header-logo">TrybeWallet</span>
             <p data-testid="email-field">
-              {user}
+              { user }
             </p>
-            <span data-testid="total-field">{despesas}</span>
-            <span data-testid="header-currency-field">BRL</span>
+            <p data-testid="total-field">
+              0
+            </p>
+            <p data-testid="header-currency-field">BRL</p>
           </div>
         )
         : (
@@ -34,6 +50,8 @@ const mapStateToProps = (state) => ({
 
 Header.propTypes = {
   user: PropTypes.string.isRequired,
+  despesas: PropTypes.arrayOf(PropTypes.array).isRequired,
+  moedas: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

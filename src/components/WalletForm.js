@@ -27,13 +27,15 @@ class WalletForm extends React.Component {
   }
 
   addGasto = () => {
-    const { despesas } = this.props;
+    const { despesas, dispatch } = this.props;
     const { valorGasto } = this.state;
-    despesas.push(valorGasto);
 
     this.setState({
       valorGasto: '',
     });
+    despesas.push(valorGasto);
+
+    dispatch({ type: 'wallet', value: valorGasto })
   }
 
   render() {
@@ -57,7 +59,7 @@ class WalletForm extends React.Component {
           {currencies
             .map((item, index) => (
               <option key={ index }>
-                {item}
+                { item }
               </option>
             ))}
         </select>
@@ -85,7 +87,7 @@ class WalletForm extends React.Component {
         {despesas.map((item, index) => (
           <li
             key={ index }
-            id={index}
+            id={ index }
           >
             { item }
           </li>
@@ -98,11 +100,13 @@ class WalletForm extends React.Component {
 const mapStateToProps = (state) => ({
   despesas: state.wallet.expenses,
   currencies: state.wallet.currencies,
+  // id: state.wallet.idToEdit,
 });
 
 WalletForm.propTypes = {
   despesas: PropTypes.arrayOf(PropTypes.array).isRequired,
   currencies: PropTypes.arrayOf(PropTypes.array).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
