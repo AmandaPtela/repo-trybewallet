@@ -30,6 +30,7 @@ class WalletForm extends React.Component {
     const { despesas } = this.props;
     const { valorGasto } = this.state;
     despesas.push(valorGasto);
+    
     this.setState({
       valorGasto: '',
     });
@@ -79,7 +80,7 @@ class WalletForm extends React.Component {
           type="button"
           onClick={ this.addGasto }
         >
-          add
+          Adicionar despesa
         </button>
       </div>
     );

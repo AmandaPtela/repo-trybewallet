@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import WalletForm from '../components/WalletForm';
+import PropTypes from 'prop-types';
 // Feito com consulta ao https://serfrontend.com/blog/redux-com-react-para-iniciantes/index.html
 class Wallet extends React.Component {
   render() {
