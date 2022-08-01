@@ -8,7 +8,7 @@ const chamadaApi = () => ({
   type: api,
 });
 
-const wallet = 'wallet';
+const wallet = 'walletExpense';
 const actionWallet = (value) => ({
   type: wallet, value,
 });

@@ -7,8 +7,10 @@ const initialStateWallet = {
 };
 
 function wallet(state = initialStateWallet, action) {
-  if (action.type === 'wallet') {
-    return { [state.wallet.currencies]: action.value };
+  if (action.type === 'walletExpense') {
+    return {
+      [state.expenses]: [action.value],
+    };
   }
   return state;
 }
