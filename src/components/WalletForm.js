@@ -5,7 +5,21 @@ import PropTypes from 'prop-types';
 class WalletForm extends React.Component {
   state = {
     valorGasto: '',
-    arrayMoedas: [],
+  }
+
+  async componentDidMount() {
+    const fetchApi = () => {
+      const { currencies } = this.props;
+      const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
+      fetch(apiMoedas)
+        .then((response) => response.json())
+        .then((data) => {
+          Object.keys(data)
+            .filter((key) => key !== 'USDT')
+            .map((item) => currencies.push(item));
+        });
+    };
+    fetchApi();
   }
 
   handleValor = (e) => {
@@ -21,23 +35,9 @@ class WalletForm extends React.Component {
     });
   }
 
-  async componentDidMount() {
-    const fetchApi = () => {
-      const { currencies } = this.props;
-    const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
-      
-    fetch(apiMoedas)
-    .then((response) => response.json())
-    .then((data) => {
-      this.setState({arrayMoedas: Object.keys(data)
-        .filter((key) => key !== 'USDT').map((item) => currencies.push(item))})})
-    };
-    fetchApi();
-}
-  
   render() {
     const { valorGasto } = this.state;
-    const { despesas, currencies } = this.props;
+    const { currencies } = this.props;
     return (
       <div className="carteira-botao">
         <input
@@ -53,9 +53,12 @@ class WalletForm extends React.Component {
         <select
           data-testid="currency-input"
         >
-        {currencies.map((item, index) => <option key={ index }>
-          {item}
-          </option>)}
+          {currencies
+            .map((item, index) => (
+              <option key={ index }>
+                {item}
+              </option>
+            ))}
         </select>
 
         <select data-testid="method-input">
@@ -78,19 +81,19 @@ class WalletForm extends React.Component {
         >
           add
         </button>
-        <p>{despesas}</p>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  despesas: state.wallet.wallet.expenses,
-  currencies: state.wallet.wallet.currencies,
+  despesas: state.wallet.expenses,
+  currencies: state.wallet.currencies,
 });
 
 WalletForm.propTypes = {
   despesas: PropTypes.arrayOf(PropTypes.array).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
