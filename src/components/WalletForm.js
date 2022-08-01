@@ -30,7 +30,7 @@ class WalletForm extends React.Component {
     const { despesas } = this.props;
     const { valorGasto } = this.state;
     despesas.push(valorGasto);
-    
+
     this.setState({
       valorGasto: '',
     });
@@ -38,7 +38,7 @@ class WalletForm extends React.Component {
 
   render() {
     const { valorGasto } = this.state;
-    const { currencies } = this.props;
+    const { currencies, despesas } = this.props;
     return (
       <div className="carteira-botao">
         <input
@@ -82,6 +82,7 @@ class WalletForm extends React.Component {
         >
           Adicionar despesa
         </button>
+        {despesas.map((item, index) => <li key={ index }>{ item }</li>)}
       </div>
     );
   }
