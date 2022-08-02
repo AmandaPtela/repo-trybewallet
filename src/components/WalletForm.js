@@ -5,18 +5,20 @@ import PropTypes from 'prop-types';
 class WalletForm extends React.Component {
   state = {
     valorGasto: '',
+    arrayMoedas: [],
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const fetchApi = () => {
       const { currencies } = this.props;
       const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
       fetch(apiMoedas)
         .then((response) => response.json())
         .then((data) => {
-          Object.keys(data)
+          this.setState({ arrayMoedas: Object.keys(data)
             .filter((key) => key !== 'USDT')
-            .map((item) => currencies.push(item));
+            .map((item) => currencies.push(item)),
+          });
         });
     };
     fetchApi();
@@ -35,11 +37,11 @@ class WalletForm extends React.Component {
     });
     despesas.push(valorGasto);
 
-    dispatch({ type: 'wallet', value: valorGasto })
+    dispatch({ type: 'wallet', value: valorGasto });
   }
 
   render() {
-    const { valorGasto } = this.state;
+    const { valorGasto, arrayMoedas } = this.state;
     const { currencies, despesas } = this.props;
     return (
       <div className="carteira-botao">
@@ -57,8 +59,8 @@ class WalletForm extends React.Component {
           data-testid="currency-input"
         >
           {currencies
-            .map((item, index) => (
-              <option key={ index }>
+            .map((item, i) => (
+              <option key={ arrayMoedas[i] }>
                 { item }
               </option>
             ))}

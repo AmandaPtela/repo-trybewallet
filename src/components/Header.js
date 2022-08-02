@@ -9,19 +9,14 @@ class Header extends React.Component {
     gastos: [],
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { despesas } = this.props;
-    this.setState({ gastos: despesas });
-  }
-
-  componentDidUpdate() {
-    const { gastos } = this.state;
-    console.log(gastos);
+    this.setState({ gastos: despesas }, () => console.log(despesas));
   }
 
   render() {
     const { user } = this.props;
-    // const { gastos } = this.state;
+    const { gastos } = this.state;
     return (
       (user.length > 0)
         ? (
@@ -31,7 +26,7 @@ class Header extends React.Component {
               { user }
             </p>
             <p data-testid="total-field">
-              0
+              {gastos}
             </p>
             <p data-testid="header-currency-field">BRL</p>
           </div>
@@ -51,7 +46,7 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   user: PropTypes.string.isRequired,
   despesas: PropTypes.arrayOf(PropTypes.array).isRequired,
-  moedas: PropTypes.arrayOf(PropTypes.array).isRequired,
+  // moedas: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
