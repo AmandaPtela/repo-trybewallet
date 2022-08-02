@@ -23,7 +23,7 @@ class Header extends React.Component {
     const { moedasArray } = this.state;
     console.log(moedas);
     return (
-      (!user.length > 0)
+      (user.length > 0)
         ? (
           <div className="header">
             <span className="header-logo">TrybeWallet</span>
