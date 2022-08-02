@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 class WalletForm extends React.Component {
   state = {
     valorGasto: '',
+    description: '',
     arrayMoedas: [],
   }
 
@@ -24,8 +25,9 @@ class WalletForm extends React.Component {
     fetchApi();
   }
 
-  handleValor = (e) => {
-    this.setState({ valorGasto: e.target.value });
+  handleValor = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
   }
 
   addGasto = () => {
@@ -34,6 +36,7 @@ class WalletForm extends React.Component {
 
     this.setState({
       valorGasto: '',
+      description: '',
     });
     despesas.push(valorGasto);
 
@@ -41,19 +44,23 @@ class WalletForm extends React.Component {
   }
 
   render() {
-    const { valorGasto, arrayMoedas } = this.state;
+    const { valorGasto, description, arrayMoedas } = this.state;
     const { currencies, despesas } = this.props;
     return (
       <div className="carteira-botao">
         <input
           data-testid="value-input"
           placeholder="Valor da despesa"
+          name="valorGasto"
           value={ valorGasto }
           onChange={ this.handleValor }
         />
         <input
           data-testid="description-input"
+          name="description"
           placeholder="Descrição da despesa"
+          onChange={ this.handleValor }
+          value={ description }
         />
         <select
           data-testid="currency-input"
