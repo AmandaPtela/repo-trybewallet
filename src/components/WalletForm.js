@@ -6,19 +6,23 @@ class WalletForm extends React.Component {
   state = {
     valorGasto: '',
     description: '',
-    arrayMoedas: [],
   }
 
   componentDidMount() {
+    const { dispatch } = this.props;
     const fetchApi = () => {
-      const { currencies } = this.props;
       const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
       fetch(apiMoedas)
         .then((response) => response.json())
         .then((data) => {
-          this.setState({ arrayMoedas: Object.keys(data)
-            .filter((key) => key !== 'USDT')
-            .map((item) => currencies.push(item)),
+          const moedas = Object.keys(data)
+            .filter((key) => key !== 'USDT');
+          dispatch({
+            type: 'addCurrencies', value: moedas });
+          dispatch({
+            type: 'valoresCambio',
+            value: Object.values(data)
+              .map((item) => item.ask),
           });
         });
     };
@@ -31,20 +35,18 @@ class WalletForm extends React.Component {
   }
 
   addGasto = () => {
-    const { despesas, dispatch } = this.props;
+    const { dispatch, despesas } = this.props;
     const { valorGasto } = this.state;
-
     this.setState({
       valorGasto: '',
       description: '',
     });
-    despesas.push(valorGasto);
 
-    dispatch({ type: 'wallet', value: valorGasto });
+    dispatch({ type: 'walletExpense', value: [...despesas, valorGasto] });
   }
 
   render() {
-    const { valorGasto, description, arrayMoedas } = this.state;
+    const { valorGasto, description } = this.state;
     const { currencies, despesas } = this.props;
     return (
       <div className="carteira-botao">
@@ -64,10 +66,15 @@ class WalletForm extends React.Component {
         />
         <select
           data-testid="currency-input"
+          name="moedaCambio"
+          onChange={ (e) => {
+            const { dispatch } = this.props;
+            dispatch({ type: 'exchange', value: e.target.value });
+          } }
         >
           {currencies
             .map((item, i) => (
-              <option key={ arrayMoedas[i] }>
+              <option key={ i }>
                 { item }
               </option>
             ))}
@@ -109,12 +116,13 @@ class WalletForm extends React.Component {
 const mapStateToProps = (state) => ({
   despesas: state.wallet.expenses,
   currencies: state.wallet.currencies,
+  cambio: state.wallet.exchange,
   // id: state.wallet.idToEdit,
 });
 
 WalletForm.propTypes = {
   despesas: PropTypes.arrayOf(PropTypes.array).isRequired,
-  currencies: PropTypes.arrayOf(PropTypes.array).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
