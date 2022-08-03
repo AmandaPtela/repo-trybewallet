@@ -7,21 +7,14 @@ import PropTypes from 'prop-types';
 class Header extends React.Component {
   state = {
     // gastos: [],
-    moedasArray: [],
-  }
-
-  componentDidMount() {
-    const { moedas } = this.props;
-    this.setState({
-      moedasArray: moedas,
-      // gastos: despesas,
-    });
   }
 
   render() {
-    const { user, moedas } = this.props;
-    const { moedasArray } = this.state;
-    console.log(moedas);
+    const { user, despesas, valorCambio } = this.props;
+    const soma = despesas.reduce((acc, item) => {
+      acc += Number(item);
+      return acc;
+    }, 0);
     return (
       (user.length > 0)
         ? (
@@ -30,16 +23,20 @@ class Header extends React.Component {
             <p data-testid="email-field">
               { user }
             </p>
-            <p data-testid="total-field">
-              0
-            </p>
+            <span data-testid="total-field">
+              {despesas.length >= 1
+                ? (
+                  <p>
+                    {(soma * valorCambio[0]).toFixed(2)}
+                  </p>)
+                : <span>0</span> }
+            </span>
             <p data-testid="header-currency-field">BRL</p>
           </div>
         )
         : (
           <span className="header-off">
             TrybeWallet
-            { moedasArray }
           </span>
         )
     );
@@ -48,13 +45,15 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   user: state.user.email,
   despesas: state.wallet.expenses,
-  moedas: state.wallet.currencies,
+  cambio: state.wallet.exchange,
+  moeda: state.wallet.currencies,
+  valorCambio: state.wallet.currenciesValues,
 });
 
 Header.propTypes = {
   user: PropTypes.string.isRequired,
-  // despesas: PropTypes.arrayOf(PropTypes.array).isRequired,
-  moedas: PropTypes.arrayOf(PropTypes.array).isRequired,
+  despesas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  valorCambio: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
