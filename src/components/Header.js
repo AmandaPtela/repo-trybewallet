@@ -10,11 +10,16 @@ class Header extends React.Component {
   }
 
   render() {
-    const { user, despesas, valorCambio } = this.props;
-    const soma = despesas.reduce((acc, item) => {
-      acc += Number(item);
-      return acc;
+    const { user, despesas, valorCambio, moeda, cambio } = this.props;
+    const soma = despesas.reduce((acc, item, index) => {
+      let somas = acc += Number(item);
+      const troca = valorCambio[index]; 
+      if(moeda[index] === cambio) {
+        return (somas * troca).toFixed(2)
+      }
+      return (somas * troca).toFixed(2);
     }, 0);
+    console.log(despesas);
     return (
       (user.length > 0)
         ? (
@@ -27,7 +32,7 @@ class Header extends React.Component {
               {despesas.length >= 1
                 ? (
                   <p>
-                    {(soma * valorCambio[0]).toFixed(2)}
+                    { soma }
                   </p>)
                 : <span>0</span> }
             </span>

@@ -24,10 +24,16 @@ const actionValorCambio = (value) => ({
   type: valoresCambio, value,
 });
 
+const valorFinal = 'valorFinal';
+const actionValorFinal = (value) => ({
+  type: valorFinal, value,
+});
+
 export default {
   actionLogin,
   actionWallet,
   actionCurrencies,
   actionAddValue,
   actionValorCambio,
+  actionValorFinal,
 };

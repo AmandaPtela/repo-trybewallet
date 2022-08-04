@@ -6,6 +6,7 @@ class WalletForm extends React.Component {
   state = {
     valorGasto: '',
     description: '',
+    valorFinal: '',
   }
 
   componentDidMount() {
@@ -35,19 +36,19 @@ class WalletForm extends React.Component {
   }
 
   addGasto = () => {
-    const { dispatch, despesas } = this.props;
+    const { dispatch, expenses } = this.props;
     const { valorGasto } = this.state;
     this.setState({
       valorGasto: '',
       description: '',
     });
 
-    dispatch({ type: 'walletExpense', value: [...despesas, valorGasto] });
+    dispatch({ type: 'walletExpense', value: [...expenses, valorGasto] });
   }
 
   render() {
     const { valorGasto, description } = this.state;
-    const { currencies, despesas } = this.props;
+    const { currencies, expenses } = this.props;
     return (
       <div className="carteira-botao">
         <input
@@ -100,7 +101,7 @@ class WalletForm extends React.Component {
         >
           Adicionar despesa
         </button>
-        {despesas.map((item, index) => (
+        {expenses.map((item, index) => (
           <li
             key={ index }
             id={ index }
@@ -114,7 +115,7 @@ class WalletForm extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  despesas: state.wallet.expenses,
+  expenses: state.wallet.expenses,
   currencies: state.wallet.currencies,
   cambio: state.wallet.exchange,
   // id: state.wallet.idToEdit,

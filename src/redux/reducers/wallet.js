@@ -1,18 +1,12 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const initialStateWallet = {
   currencies: [],
-  expenses: [/* {
-    id: '',
-    value: "",
-    description: "",
-    currency: "",
-    method: "",
-    tag: "",
-  } */],
+  expenses: [],
   editor: false,
   idToEdit: 0,
   exchange: '',
   currenciesValues: [],
+  valorFinal: '',
 };
 
 export default function wallet(state = initialStateWallet, action) {
@@ -41,6 +35,13 @@ export default function wallet(state = initialStateWallet, action) {
     return {
       ...state,
       currenciesValues: action.value,
+    };
+  }
+
+  if (action.type === 'valorFinal') {
+    return {
+      ...state,
+      valorFinal: action.value,
     };
   }
 
