@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 
 class WalletForm extends React.Component {
   state = {
-    valorGasto: '',
+    id: 0,
+    value: '',
     description: '',
-    valorFinal: '',
+    currency: 'USD',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
   }
 
   componentDidMount() {
@@ -25,6 +28,8 @@ class WalletForm extends React.Component {
             value: Object.values(data)
               .map((item) => item.ask),
           });
+          dispatch({type: 'exchangeRates', value: Object.values(data)
+          .filter((key) => key.code !== 'USDT')});
         });
     };
     fetchApi();
@@ -32,30 +37,55 @@ class WalletForm extends React.Component {
 
   handleValor = ({ target }) => {
     const { name, value } = target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value })
+  };
+
+  componentDidUpdate() {
+    const { dispatch } = this.props;
+    dispatch({type: 'exchange', value: this.state.currency})
   }
-
   addGasto = () => {
-    const { dispatch, expenses } = this.props;
-    const { valorGasto } = this.state;
-    this.setState({
-      valorGasto: '',
-      description: '',
-    });
+    const fetchApi = () => {
+      const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
+      fetch(apiMoedas)
+        .then((response) => response.json())
+        .then((data) => data)
+    };
+    fetchApi();
 
-    dispatch({ type: 'walletExpense', value: [...expenses, valorGasto] });
+    const { dispatch, exchangeRates, expense } = this.props;
+    this.setState((prevState) => ({ id: prevState.id + 1 }));
+    this.setState({
+      value: '',
+      description: '',
+      currency: '',
+      method: '',
+      tag: '',
+    });
+    
+    const expenses = {
+      value: this.state.value,
+      description: this.state.description,
+      currency: this.state.currency,
+      method: this.state.method,
+      tag: this.state.tag,
+      id: this.state.id,
+      exchangeRates: exchangeRates,
+      }
+    dispatch({ type: 'walletExpense', value: [...expense, expenses]
+    });
   }
 
   render() {
-    const { valorGasto, description } = this.state;
-    const { currencies, expenses } = this.props;
+    const { value, description } = this.state;
+    const { currencies, expense } = this.props;
     return (
       <div className="carteira-botao">
         <input
           data-testid="value-input"
           placeholder="Valor da despesa"
-          name="valorGasto"
-          value={ valorGasto }
+          name="value"
+          value={ value }
           onChange={ this.handleValor }
         />
         <input
@@ -67,11 +97,8 @@ class WalletForm extends React.Component {
         />
         <select
           data-testid="currency-input"
-          name="moedaCambio"
-          onChange={ (e) => {
-            const { dispatch } = this.props;
-            dispatch({ type: 'exchange', value: e.target.value });
-          } }
+          name="currency"
+          onChange={ this.handleValor }
         >
           {currencies
             .map((item, i) => (
@@ -81,13 +108,19 @@ class WalletForm extends React.Component {
             ))}
         </select>
 
-        <select data-testid="method-input">
+        <select data-testid="method-input"
+          name="method"
+          onChange={this.handleValor}
+        >
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
           <option>Cartão de débito</option>
         </select>
 
-        <select data-testid="tag-input">
+        <select data-testid="tag-input"
+            name="tag"
+            onChange={this.handleValor}
+          >
           <option>Alimentação</option>
           <option>Lazer</option>
           <option>Trabalho</option>
@@ -101,12 +134,11 @@ class WalletForm extends React.Component {
         >
           Adicionar despesa
         </button>
-        {expenses.map((item, index) => (
+        {Object.values(expense).map((i, index) => (
           <li
             key={ index }
-            id={ index }
           >
-            { item }
+            { i.value }
           </li>
         ))}
       </div>
@@ -115,10 +147,10 @@ class WalletForm extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  expenses: state.wallet.expenses,
+  expense: state.wallet.expenses,
   currencies: state.wallet.currencies,
-  cambio: state.wallet.exchange,
-  // id: state.wallet.idToEdit,
+  exchange: state.wallet.exchange,
+  exchangeRates: state.wallet.exchangeRates,
 });
 
 WalletForm.propTypes = {

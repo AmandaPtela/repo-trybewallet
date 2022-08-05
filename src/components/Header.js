@@ -8,20 +8,27 @@ class Header extends React.Component {
   state = {
     // gastos: [],
   }
-
+  
+  componentDidUpdate() {
+  const { dispatch, despesas } = this.props;
+  let soma = Object.values(despesas)
+  .map((item) => item).reduce((acc, item) => {
+    acc = acc += Number(item.value);
+    return acc;
+  }, 0);
+  dispatch({type: 'somaTotal', value: soma})
+}
   render() {
-    const { user, despesas, valorCambio, moeda, cambio } = this.props;
-    const soma = despesas.reduce((acc, item, index) => {
-      let somas = acc += Number(item);
-      const troca = valorCambio[index]; 
-      if(moeda[index] === cambio) {
-        return (somas * troca).toFixed(2)
-      }
-      return (somas * troca).toFixed(2);
-    }, 0);
-    console.log(despesas);
+    const { user, valorTotal, exchangeRates, cambio, valorCambio  } = this.props;
+    
+    const moedaCambio = Object.values(exchangeRates)
+    .filter((item) => item.code === cambio)
+    .map((item) => item.ask)
+    const teste = Object.values(valorCambio).find((item) => item === moedaCambio)
+    console.log(teste);
+    
     return (
-      (user.length > 0)
+      (!user.length > 0)
         ? (
           <div className="header">
             <span className="header-logo">TrybeWallet</span>
@@ -29,12 +36,9 @@ class Header extends React.Component {
               { user }
             </p>
             <span data-testid="total-field">
-              {despesas.length >= 1
-                ? (
-                  <p>
-                    { soma }
-                  </p>)
-                : <span>0</span> }
+              <p>
+                { valorTotal * Number(moedaCambio) }
+              </p>
             </span>
             <p data-testid="header-currency-field">BRL</p>
           </div>
@@ -53,6 +57,8 @@ const mapStateToProps = (state) => ({
   cambio: state.wallet.exchange,
   moeda: state.wallet.currencies,
   valorCambio: state.wallet.currenciesValues,
+  exchangeRates: state.wallet.exchangeRates,
+  valorTotal: state.wallet.somaTotal,
 });
 
 Header.propTypes = {

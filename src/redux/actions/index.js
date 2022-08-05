@@ -24,9 +24,14 @@ const actionValorCambio = (value) => ({
   type: valoresCambio, value,
 });
 
-const valorFinal = 'valorFinal';
-const actionValorFinal = (value) => ({
-  type: valorFinal, value,
+const exchangeRates = 'exchangeRates';
+const actionExchangeRates = (value) => ({
+  type: exchangeRates, value,
+});
+
+const somaTotal = 'somaTotal';
+const actionSomaTotal = (value) => ({
+  type: somaTotal, value,
 });
 
 export default {
@@ -35,5 +40,5 @@ export default {
   actionCurrencies,
   actionAddValue,
   actionValorCambio,
-  actionValorFinal,
+  actionExchangeRates,
 };

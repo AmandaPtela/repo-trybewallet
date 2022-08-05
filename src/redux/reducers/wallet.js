@@ -6,7 +6,8 @@ const initialStateWallet = {
   idToEdit: 0,
   exchange: '',
   currenciesValues: [],
-  valorFinal: '',
+  exchangeRates: {},
+  somaTotal: '',
 };
 
 export default function wallet(state = initialStateWallet, action) {
@@ -38,10 +39,17 @@ export default function wallet(state = initialStateWallet, action) {
     };
   }
 
-  if (action.type === 'valorFinal') {
+  if (action.type === 'exchangeRates') {
     return {
       ...state,
-      valorFinal: action.value,
+      exchangeRates: action.value,
+    };
+  }
+
+  if (action.type === 'somaTotal') {
+    return {
+      ...state,
+      somaTotal: action.value,
     };
   }
 
