@@ -8,27 +8,30 @@ class Header extends React.Component {
   state = {
     // gastos: [],
   }
-  
+
   componentDidUpdate() {
-  const { dispatch, despesas } = this.props;
-  let soma = Object.values(despesas)
-  .map((item) => item).reduce((acc, item) => {
-    acc = acc += Number(item.value);
-    return acc;
-  }, 0);
-  dispatch({type: 'somaTotal', value: soma})
-}
-  render() {
-    const { user, valorTotal, exchangeRates, cambio, valorCambio  } = this.props;
-    
+    const { dispatch, despesas, exchangeRates, cambio } = this.props;
+    const lista = Object.values(despesas)
+      .map((item) => item);
+    const soma = lista.reduce((acc, item) => {
+      acc += Number(item.value);
+      return acc;
+    }, 0);
+
     const moedaCambio = Object.values(exchangeRates)
-    .filter((item) => item.code === cambio)
-    .map((item) => item.ask)
-    const teste = Object.values(valorCambio).find((item) => item === moedaCambio)
-    console.log(teste);
-    
+      .splice(0, 1);
+    const moedaUso = moedaCambio.filter((item) => item.code === cambio)
+      .map((item) => Number(item.ask));
+
+    console.log(moedaUso);
+    dispatch({ type: 'somaTotal', value: (soma * moedaUso).toFixed(2) });
+  }
+
+  render() {
+    const { user, valorTotal } = this.props;
+
     return (
-      (!user.length > 0)
+      (user.length > 0)
         ? (
           <div className="header">
             <span className="header-logo">TrybeWallet</span>
@@ -37,7 +40,7 @@ class Header extends React.Component {
             </p>
             <span data-testid="total-field">
               <p>
-                { valorTotal * Number(moedaCambio) }
+                { valorTotal }
               </p>
             </span>
             <p data-testid="header-currency-field">BRL</p>
@@ -64,7 +67,11 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   user: PropTypes.string.isRequired,
   despesas: PropTypes.arrayOf(PropTypes.string).isRequired,
-  valorCambio: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // valorCambio: PropTypes.arrayOf(PropTypes.string).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  valorTotal: PropTypes.number.isRequired,
+  exchangeRates: PropTypes.objectOf(PropTypes.array).isRequired,
+  cambio: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

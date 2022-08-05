@@ -41,4 +41,5 @@ export default {
   actionAddValue,
   actionValorCambio,
   actionExchangeRates,
+  actionSomaTotal,
 };
