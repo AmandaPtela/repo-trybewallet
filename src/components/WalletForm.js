@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 class WalletForm extends React.Component {
   state = {
-    idE: 0,
-    valueE: '',
-    descriptionE: '',
-    currencyE: 'USD',
-    methodE: 'Dinheiro',
-    tagE: 'Alimentação',
+    Eid: 0,
+    Evalue: '',
+    Edescription: '',
+    EcurrencyCopy: 'USD',
+    Emethod: 'Dinheiro',
+    Etag: 'Alimentação',
   }
 
   componentDidMount() {
@@ -30,29 +30,45 @@ class WalletForm extends React.Component {
           });
           dispatch({
             type: 'exchangeRates',
-            value: Object.values(data)
-              .filter((key) => key.code !== 'USDT'),
+            value: (data),
           });
         });
     };
     fetchApi();
-  }
-
-  componentDidUpdate() {
-    const { dispatch } = this.props;
-    const { currencyE } = this.state;
     dispatch({
       type: 'exchange',
-      value: currencyE,
+      value: 'USD',
     });
   }
 
-  handleValor = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value });
-  };
+    handleValor = ({ target }) => {
+      const { name, value } = target;
+      this.setState({ [name]: value });
+    };
 
     addGasto = () => {
+      const { dispatch, exchangeRatesP, expense } = this.props;
+      const { Evalue, Edescription, EcurrencyCopy, Emethod, Etag, Eid } = this.state;
+      this.setState((prevState) => ({ Eid: prevState.Eid + 1 }));
+      if (EcurrencyCopy) {
+        dispatch({
+          type: 'exchange',
+          value: EcurrencyCopy,
+        });
+      } else { dispatch({ type: 'exchange', value: 'USD' }); }
+      const expenses = {
+        id: Eid,
+        value: Evalue,
+        description: Edescription,
+        currency: EcurrencyCopy,
+        method: Emethod,
+        tag: Etag,
+        exchangeRates: exchangeRatesP,
+      };
+      dispatch({
+        type: 'walletExpense',
+        value: [...expense, expenses],
+      });
       const fetchApi = () => {
         const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
         fetch(apiMoedas)
@@ -60,55 +76,51 @@ class WalletForm extends React.Component {
           .then((data) => data);
       };
       fetchApi();
+      /*
+      const lista = Object.values(expense);
+      const soma = lista.reduce((acc, item) => {
+        acc += Number(item.value);
+        return acc;
+      }, 0);
+      console.log(expense);
 
-      const { dispatch, exchangeRatesP, expense } = this.props;
-      const { valueE, descriptionE, currencyE, methodE, tagE, idE } = this.state;
-      this.setState((prevState) => ({ idE: prevState.idE + 1 }));
+      const moedaCambio = Object.values(exchangeRatesP);
+      const moedaUso = moedaCambio.filter((item) => item.code === exchange)
+        .map((item) => Number(item.ask));
+      dispatch({ type: 'somaTotal', value: (soma * moedaUso).toFixed(2) });
 
-      const expenses = {
-        id: idE,
-        value: valueE,
-        description: descriptionE,
-        currency: currencyE,
-        method: methodE,
-        tag: tagE,
-        exchangeRates: exchangeRatesP,
-      };
-      dispatch({
-        type: 'walletExpense',
-        value: [...expense, expenses],
-      });
+      if (moedaCambio.filter((item) => item.code === 'USD')) {
+        dispatch({ type: 'somaTotal', value: (soma * moedaUso[0]).toFixed(2) });
+      } */
 
       this.setState({
-        valueE: '',
-        descriptionE: '',
-        methodE: '',
-        tagE: '',
+        Evalue: '',
+        Edescription: '',
       });
     }
 
     render() {
-      const { valueE, descriptionE } = this.state;
+      const { Evalue, Edescription } = this.state;
       const { currencies, expense } = this.props;
       return (
         <div className="carteira-botao">
           <input
             data-testid="value-input"
             placeholder="Valor da despesa"
-            name="valueE"
-            value={ valueE }
+            name="Evalue"
+            value={ Evalue }
             onChange={ this.handleValor }
           />
           <input
             data-testid="description-input"
-            name="descriptionE"
+            name="Edescription"
             placeholder="Descrição da despesa"
             onChange={ this.handleValor }
-            value={ descriptionE }
+            value={ Edescription }
           />
           <select
             data-testid="currency-input"
-            name="currencyE"
+            name="EcurrencyCopy"
             onChange={ this.handleValor }
           >
             {currencies
@@ -120,7 +132,7 @@ class WalletForm extends React.Component {
           </select>
           <select
             data-testid="method-input"
-            name="methodE"
+            name="Emethod"
             onChange={ this.handleValor }
           >
             <option>Dinheiro</option>
@@ -129,7 +141,7 @@ class WalletForm extends React.Component {
           </select>
           <select
             data-testid="tag-input"
-            name="tagE"
+            name="Etag"
             onChange={ this.handleValor }
           >
             <option>Alimentação</option>
@@ -167,6 +179,7 @@ WalletForm.propTypes = {
   expense: PropTypes.arrayOf(PropTypes.array).isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
+  // exchange: PropTypes.string.isRequired,
   exchangeRatesP: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 

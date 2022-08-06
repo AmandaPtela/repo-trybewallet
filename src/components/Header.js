@@ -5,33 +5,42 @@ import PropTypes from 'prop-types';
 
 // Feito com consulta ao https://serfrontend.com/blog/redux-com-react-para-iniciantes/index.html
 class Header extends React.Component {
-  state = {
-    // gastos: [],
-  }
-
   componentDidUpdate() {
     const { dispatch, despesas, exchangeRates, cambio } = this.props;
-    const lista = Object.values(despesas)
-      .map((item) => item);
+    console.log(cambio);
+
+    const moedaCambio = Object.values(exchangeRates);
+    const moedaUso = moedaCambio.filter((item) => item.code === cambio)
+      .map((item) => item.ask);
+    const lista = Object.values(despesas);
     const soma = lista.reduce((acc, item) => {
-      acc += Number(item.value);
+      acc += Number(item.value) * Number(moedaUso[0]).toFixed(2);
       return acc;
     }, 0);
+    console.log(`Valor moeda de cambio ${Number(moedaUso[0]).toFixed(2)}`);
+    console.log(`reduce ${soma}`);
 
-    const moedaCambio = Object.values(exchangeRates)
-      .splice(0, 1);
+    dispatch({ type: 'somaTotal', value: soma });
+    /* const moedaCambio = Object.values(exchangeRates);
     const moedaUso = moedaCambio.filter((item) => item.code === cambio)
       .map((item) => Number(item.ask));
-
-    console.log(moedaUso);
-    dispatch({ type: 'somaTotal', value: (soma * moedaUso).toFixed(2) });
+    const soma = Object.values(despesas)
+      .reduce((acc, item) => {
+        acc += Number(item.value);
+        return acc;
+      }, 0);
+    if (moedaCambio.filter((item) => item.code === cambio)) {
+      console.log(soma);
+      console.log(moedaUso[0]);
+      dispatch({ type: 'somaTotal', value: (soma * moedaUso[0]).toFixed(2) });
+    } */
   }
 
   render() {
     const { user, valorTotal } = this.props;
-
+    console.log(`total ${valorTotal}`);
     return (
-      (user.length > 0)
+      (!user.length > 0)
         ? (
           <div className="header">
             <span className="header-logo">TrybeWallet</span>
