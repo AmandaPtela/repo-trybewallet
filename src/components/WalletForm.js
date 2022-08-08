@@ -76,22 +76,6 @@ class WalletForm extends React.Component {
           .then((data) => data);
       };
       fetchApi();
-      /*
-      const lista = Object.values(expense);
-      const soma = lista.reduce((acc, item) => {
-        acc += Number(item.value);
-        return acc;
-      }, 0);
-      console.log(expense);
-
-      const moedaCambio = Object.values(exchangeRatesP);
-      const moedaUso = moedaCambio.filter((item) => item.code === exchange)
-        .map((item) => Number(item.ask));
-      dispatch({ type: 'somaTotal', value: (soma * moedaUso).toFixed(2) });
-
-      if (moedaCambio.filter((item) => item.code === 'USD')) {
-        dispatch({ type: 'somaTotal', value: (soma * moedaUso[0]).toFixed(2) });
-      } */
 
       this.setState({
         Evalue: '',
@@ -101,7 +85,7 @@ class WalletForm extends React.Component {
 
     render() {
       const { Evalue, Edescription } = this.state;
-      const { currencies, expense } = this.props;
+      const { currencies } = this.props;
       return (
         <div className="carteira-botao">
           <input
@@ -156,13 +140,6 @@ class WalletForm extends React.Component {
           >
             Adicionar despesa
           </button>
-          {Object.values(expense).map((i, index) => (
-            <li
-              key={ index }
-            >
-              { i.value }
-            </li>
-          ))}
         </div>
       );
     }
@@ -179,7 +156,6 @@ WalletForm.propTypes = {
   expense: PropTypes.arrayOf(PropTypes.array).isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
-  // exchange: PropTypes.string.isRequired,
   exchangeRatesP: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
