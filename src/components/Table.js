@@ -3,6 +3,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Table extends Component {
+/*   remove = (e) => {
+    const { despesas, dispatch } = this.props;
+    const filtro = despesas.filter((item) => item.id !== e.target.value);
+    dispatch({
+      type: 'walletExpense',
+      value: filtro,
+    });
+  } */
+
   render() {
     const { despesas } = this.props;
     const n = 3;
@@ -34,6 +43,14 @@ class Table extends Component {
                 <td>{ Number(i.exchangeRates[i.currency].ask).toFixed(2) }</td>
                 <td>{ i.value * Number(i.exchangeRates[i.currency].ask).toFixed(n) }</td>
                 <td>Real</td>
+                <button
+                  type="button"
+                  value={ i.id }
+                  data-testid="delete-btn"
+                  onClick={ () => console.log('opa') }
+                >
+                  Excluir
+                </button>
               </tr>
             ))
           }
@@ -49,6 +66,7 @@ const mapStateToProps = (state) => ({
 
 Table.propTypes = {
   despesas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(Table);
