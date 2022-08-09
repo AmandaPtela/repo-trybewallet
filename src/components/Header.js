@@ -20,7 +20,7 @@ class Header extends React.Component {
               { user }
             </p>
             <span data-testid="total-field">
-              { Number(soma()) }
+              { Number(soma()).toFixed(2) }
             </span>
             <p data-testid="header-currency-field">BRL</p>
           </div>
