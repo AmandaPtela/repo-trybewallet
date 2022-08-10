@@ -49,6 +49,8 @@ export default function wallet(state = initialStateWallet, action) {
   if (action.type === 'edit') {
     return { ...state, expenses: action.value };
   }
-
+  if (action.type === 'idToEdit') {
+    return { ...state, idToEdit: action.value };
+  }
   return state;
 }

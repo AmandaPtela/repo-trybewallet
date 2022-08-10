@@ -60,8 +60,8 @@ class Table extends Component {
                         type: 'editExpense',
                         value: true,
                       });
-                      dispatch({ type: 'idToEdit', value: i.index });
-                      console.log(i.exchangeRates[i.currency].ask);
+                      dispatch({ type: 'idToEdit', value: i.id });
+                      console.log(i.id);
                     } }
                   >
                     Editar despesa

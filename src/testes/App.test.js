@@ -71,7 +71,7 @@ describe('Verifica página Wallet', () => {
     },
   };
 
-  it('Verifica se Wallet é renderizada', () => {
+  it('Verifica se Wallet é renderizada', async () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const componentDidMount = jest.fn();
     componentDidMount();
@@ -122,6 +122,8 @@ describe('Verifica página Wallet', () => {
     userEvent.selectOptions(inputMethod, 'Dinheiro');
     userEvent.selectOptions(inputTag, 'Alimentação');
     userEvent.click(botaoAddExpense);
+    fetchApi();
+    expect(fetchApi).toBeCalled();
     expect(inputValor).toContainHTML('');
     expect(inputDescricao).toContainHTML('');
     expect(inputCurrency).toContainHTML('');
@@ -131,7 +133,7 @@ describe('Verifica página Wallet', () => {
 
     renderWithRouterAndRedux(<Table />);
 
-    const tabela = screen.getAllByRole('columnheader');
+    const tabela = screen.findByRole('columnheader');
     expect(typeof tabela).toBe('object');
     expect(tabela[0]).toBeInTheDocument();
 

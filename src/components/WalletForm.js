@@ -78,26 +78,29 @@ class WalletForm extends React.Component {
       });
     }
 
-    editExpense = (e) => {
-      const { expense, exchangeRatesP, dispatch } = this.props;
+    editExpense = () => {
+      const { expense, exchangeRatesP, dispatch, idEdit } = this.props;
       const { Evalue, Edescription, Etag, Emethod, EcurrencyCopy } = this.state;
-      const valor = e.target.value;
-      const filtro = expense.filter(({ id }) => id !== valor);
 
-      const idd = filtro.map((item) => item.id);
+      console.log(idEdit);
+      // const filtro = expense.filter(({ id }) => id !== valor);
+
+      // const idd = filtro.map((item) => item.id);
+      const posEdit = expense.filter(({ id }) => id !== idEdit);
+      console.log(posEdit);
 
       dispatch({
         type: 'edit',
         value:
           [{
-            id: idd[0],
+            id: idEdit,
             value: Evalue,
             description: Edescription,
             currency: EcurrencyCopy,
             method: Emethod,
             tag: Etag,
             exchangeRates: exchangeRatesP,
-          }],
+          }, ...posEdit],
       });
       dispatch({ type: 'editExpense', value: false });
       this.setState({
@@ -108,7 +111,8 @@ class WalletForm extends React.Component {
 
     render() {
       const { Evalue, Edescription } = this.state;
-      const { currencies, editor, id } = this.props;
+      const { currencies, editor, idEdit } = this.props;
+      console.log(idEdit);
       return (
         <div className="carteira-botao">
           <input
@@ -163,7 +167,7 @@ class WalletForm extends React.Component {
           { editor
             ? (
               <button
-                value={ id }
+                value={ idEdit }
                 type="button"
                 onClick={ this.editExpense }
               >
@@ -189,7 +193,7 @@ const mapStateToProps = (state) => ({
   exchange: state.wallet.exchange,
   exchangeRatesP: state.wallet.exchangeRates,
   editor: state.wallet.editor,
-  id: state.wallet.idToEdit,
+  idEdit: state.wallet.idToEdit,
 });
 
 WalletForm.propTypes = {
@@ -198,7 +202,8 @@ WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   exchangeRatesP: PropTypes.arrayOf(PropTypes.object).isRequired,
   editor: PropTypes.bool.isRequired,
-  id: PropTypes.number.isRequired,
+  idEdit: PropTypes.number.isRequired,
+
 };
 
 export default connect(mapStateToProps)(WalletForm);
