@@ -19,10 +19,10 @@ class Table extends Component {
 
   render() {
     const { despesas } = this.props;
-    const n = 3;
+    const n = 2;
     return (
       <>
-        <thead>
+        <thead className="tabela">
           <tr>
             <th>Descrição</th>
             <th>Tag</th>
@@ -42,14 +42,33 @@ class Table extends Component {
                 <td>{ i.description }</td>
                 <td>{ i.tag }</td>
                 <td>{ i.method }</td>
-                <td>{ Number(i.value).toFixed(2) }</td>
+                <td>{ Number(i.value).toFixed(n) }</td>
                 <td>{ i.currency }</td>
                 <td>{ i.exchangeRates[i.currency].name}</td>
-                <td>{ i.value * Number(i.exchangeRates[i.currency].ask).toFixed(n) }</td>
-                <td>{ Number(i.exchangeRates[i.currency].ask).toFixed(2) }</td>
+                <td>{ Number(i.value * i.exchangeRates[i.currency].ask).toFixed(n) }</td>
+                <td>{ Number(i.exchangeRates[i.currency].ask).toFixed(n) }</td>
                 <td>
                   <button
+                    className="editor"
                     type="button"
+                    value={ i.id }
+                    key={ i.value }
+                    data-testid="edit-btn"
+                    onClick={ () => {
+                      const { dispatch } = this.props;
+                      dispatch({
+                        type: 'editExpense',
+                        value: true,
+                      });
+                      dispatch({ type: 'idToEdit', value: i.index });
+                      console.log(i.exchangeRates[i.currency].ask);
+                    } }
+                  >
+                    Editar despesa
+                  </button>
+                  <button
+                    type="button"
+                    className="exclui"
                     value={ i.value }
                     key={ i.id }
                     data-testid="delete-btn"

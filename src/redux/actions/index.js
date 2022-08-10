@@ -14,11 +14,6 @@ const actionWallet = (value) => ({
   type: wallet, value,
 });
 
-const exchange = 'addValue';
-const actionAddValue = (value) => ({
-  type: exchange, value,
-});
-
 const valoresCambio = 'valoresCambio';
 const actionValorCambio = (value) => ({
   type: valoresCambio, value,
@@ -34,12 +29,27 @@ const actionSomaTotal = (value) => ({
   type: somaTotal, value,
 });
 
+const editExpense = 'editExpense';
+const actionEditExpense = (value) => ({
+  type: editExpense, value,
+});
+const edit = 'edit';
+const actionEdit = (value) => ({
+  type: edit, value,
+});
+const idToEdit = 'idToEdit';
+const actionIdToEdit = (value) => ({
+  type: idToEdit, value,
+});
+
 export default {
   actionLogin,
   actionWallet,
   actionCurrencies,
-  actionAddValue,
   actionValorCambio,
   actionExchangeRates,
   actionSomaTotal,
+  actionEditExpense,
+  actionIdToEdit,
+  actionEdit,
 };

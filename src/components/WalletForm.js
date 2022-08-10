@@ -49,13 +49,8 @@ class WalletForm extends React.Component {
     addGasto = () => {
       const { dispatch, exchangeRatesP, expense } = this.props;
       const { Evalue, Edescription, EcurrencyCopy, Emethod, Etag, Eid } = this.state;
+      dispatch({ type: 'editExpense', value: false });
       this.setState((prevState) => ({ Eid: prevState.Eid + 1 }));
-      if (EcurrencyCopy) {
-        dispatch({
-          type: 'exchange',
-          value: EcurrencyCopy,
-        });
-      } else { dispatch({ type: 'exchange', value: 'USD' }); }
       const expenses = {
         id: Eid,
         value: Evalue,
@@ -83,9 +78,37 @@ class WalletForm extends React.Component {
       });
     }
 
+    editExpense = (e) => {
+      const { expense, exchangeRatesP, dispatch } = this.props;
+      const { Evalue, Edescription, Etag, Emethod, EcurrencyCopy } = this.state;
+      const valor = e.target.value;
+      const filtro = expense.filter(({ id }) => id !== valor);
+
+      const idd = filtro.map((item) => item.id);
+
+      dispatch({
+        type: 'edit',
+        value:
+          [{
+            id: idd[0],
+            value: Evalue,
+            description: Edescription,
+            currency: EcurrencyCopy,
+            method: Emethod,
+            tag: Etag,
+            exchangeRates: exchangeRatesP,
+          }],
+      });
+      dispatch({ type: 'editExpense', value: false });
+      this.setState({
+        Evalue: '',
+        Edescription: '',
+      });
+    }
+
     render() {
       const { Evalue, Edescription } = this.state;
-      const { currencies } = this.props;
+      const { currencies, editor, id } = this.props;
       return (
         <div className="carteira-botao">
           <input
@@ -109,7 +132,10 @@ class WalletForm extends React.Component {
           >
             {currencies
               .map((item, i) => (
-                <option key={ i }>
+                <option
+                  key={ i }
+                  className="currency-input"
+                >
                   { item }
                 </option>
               ))}
@@ -134,12 +160,24 @@ class WalletForm extends React.Component {
             <option>Transporte</option>
             <option>Saúde</option>
           </select>
-          <button
-            type="button"
-            onClick={ this.addGasto }
-          >
-            Adicionar despesa
-          </button>
+          { editor
+            ? (
+              <button
+                value={ id }
+                type="button"
+                onClick={ this.editExpense }
+              >
+                Editar despesa
+              </button>
+            )
+            : (
+              <button
+                type="button"
+                onClick={ this.addGasto }
+              >
+                Adicionar despesa
+              </button>
+            ) }
         </div>
       );
     }
@@ -150,6 +188,8 @@ const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   exchange: state.wallet.exchange,
   exchangeRatesP: state.wallet.exchangeRates,
+  editor: state.wallet.editor,
+  id: state.wallet.idToEdit,
 });
 
 WalletForm.propTypes = {
@@ -157,6 +197,8 @@ WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
   exchangeRatesP: PropTypes.arrayOf(PropTypes.object).isRequired,
+  editor: PropTypes.bool.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
