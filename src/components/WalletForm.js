@@ -64,11 +64,11 @@ class WalletForm extends React.Component {
         type: 'walletExpense',
         value: [...expense, expenses],
       });
-      const fetchApi = () => {
+      const fetchApi = async () => {
         const apiMoedas = 'https://economia.awesomeapi.com.br/json/all';
-        fetch(apiMoedas)
-          .then((response) => response.json())
-          .then((data) => data);
+        const response = await fetch(apiMoedas);
+        const data = await response.json();
+        return data;
       };
       fetchApi();
 
@@ -82,12 +82,7 @@ class WalletForm extends React.Component {
       const { expense, exchangeRatesP, dispatch, idEdit } = this.props;
       const { Evalue, Edescription, Etag, Emethod, EcurrencyCopy } = this.state;
 
-      console.log(idEdit);
-      // const filtro = expense.filter(({ id }) => id !== valor);
-
-      // const idd = filtro.map((item) => item.id);
       const posEdit = expense.filter(({ id }) => id !== idEdit);
-      console.log(posEdit);
 
       dispatch({
         type: 'edit',
@@ -112,7 +107,6 @@ class WalletForm extends React.Component {
     render() {
       const { Evalue, Edescription } = this.state;
       const { currencies, editor, idEdit } = this.props;
-      console.log(idEdit);
       return (
         <div className="carteira-botao">
           <input

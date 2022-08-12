@@ -35,7 +35,7 @@ class Table extends Component {
             <th>Editar/Excluir</th>
           </tr>
         </thead>
-        <tbody>
+        <thead>
           {
             despesas.map((i, index) => (
               <tr key={ index }>
@@ -80,7 +80,7 @@ class Table extends Component {
               </tr>
             ))
           }
-        </tbody>
+        </thead>
       </>
     );
   }
