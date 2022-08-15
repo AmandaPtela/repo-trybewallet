@@ -3,7 +3,6 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from '../tests/helpers/renderWith';
 import storeGeral from '../redux/store';
-import mockData from '../tests/helpers/mockData';
 import App from '../App';
 import Wallet from '../pages/Wallet';
 import Table from '../components/Table';
@@ -530,6 +529,7 @@ describe('Verifica página Wallet', () => {
       },
       editor: 'false',
     }
+
   const store = storeGeral.getState();
     renderWithRouterAndRedux(<WalletForm />);
     const fetchApi = jest.fn();
@@ -559,29 +559,28 @@ describe('Verifica página Wallet', () => {
     expect(inputCurrency).toContainHTML('');
     expect(inputMethod).toContainHTML('');
     expect(inputTag).toContainHTML('');
-
-    const botaoEditar = screen.getByTestId('edit-btn')
-
-    // expect(typeof storeMock).toBe('object');
-/*     const tabelaCelula = screen.getByRole('cell')
-    expect(store.wallet.editor).toBe(false);
-    expect(tabelaCelula).toBeInTheDocument();
-
+  });
+  it('Verifica Table', () => {
+    renderWithRouterAndRedux(<Wallet />)
+    const store = storeGeral.getState();
     const titleTable = screen.getAllByRole('columnheader');
-
+    
     expect(titleTable[0]).toBeInTheDocument();
     expect(titleTable[1]).toBeInTheDocument();
     expect(titleTable[2]).toBeInTheDocument();
     expect(titleTable[3]).toBeInTheDocument();
-    const celulaTable = screen.getByText('2.00');
-    expect(celulaTable).toBeInTheDocument();
-
+    console.log(store);
+    screen.logTestingPlaygroundURL();
+    expect(store.wallet.editor).toBe(false);
+/*     const botaoEditar = screen.getByTestId('edit-btn')
+    expect(botaoEditar).toBeInTheDocument(); */
+    
     const editExpense = jest.fn();
     editExpense();
     expect(editExpense).toHaveBeenCalled();
-
+    
     const remove = jest.fn();
     remove();
-    expect(remove).toHaveBeenCalled(); */
-    });
+    expect(remove).toHaveBeenCalled();
+  });
 });

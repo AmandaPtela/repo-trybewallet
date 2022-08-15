@@ -35,7 +35,7 @@ class Table extends Component {
             <th>Editar/Excluir</th>
           </tr>
         </thead>
-        <thead>
+        <tbody>
           {
             despesas.map((i, index) => (
               <tr key={ index }>
@@ -61,7 +61,7 @@ class Table extends Component {
                         value: true,
                       });
                       dispatch({ type: 'idToEdit', value: i.id });
-                      console.log(i.id);
+                      console.log(i.exchangeRates[i.currency].name);
                     } }
                   >
                     Editar despesa
@@ -80,7 +80,7 @@ class Table extends Component {
               </tr>
             ))
           }
-        </thead>
+        </tbody>
       </>
     );
   }
