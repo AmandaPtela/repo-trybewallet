@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { remove, editar } from '../testes/Functions';
 
 class Table extends Component {
-  remove = (e) => {
-    const { despesas, dispatch, valorTotal } = this.props;
-    const valor = e.target.value;
-    const filtro = despesas.filter(({ value }) => value !== valor);
-    dispatch({
-      type: 'walletExpense',
-      value: filtro,
-    });
-    dispatch({
-      type: 'somaTotal',
-      value: (valorTotal - valor),
-    });
-  }
-
   render() {
-    const { despesas } = this.props;
+    const { despesas, dispatch, valorTotal } = this.props;
     const n = 2;
     return (
       <>
@@ -54,15 +41,7 @@ class Table extends Component {
                     value={ i.id }
                     key={ i.value }
                     data-testid="edit-btn"
-                    onClick={ () => {
-                      const { dispatch } = this.props;
-                      dispatch({
-                        type: 'editExpense',
-                        value: true,
-                      });
-                      dispatch({ type: 'idToEdit', value: i.id });
-                      console.log(i.exchangeRates[i.currency].name);
-                    } }
+                    onClick={ () => editar(i.id, dispatch) }
                   >
                     Editar despesa
                   </button>
@@ -72,7 +51,7 @@ class Table extends Component {
                     value={ i.value }
                     key={ i.id }
                     data-testid="delete-btn"
-                    onClick={ this.remove }
+                    onClick={ (e) => remove(e, despesas, dispatch, valorTotal) }
                   >
                     Excluir
                   </button>

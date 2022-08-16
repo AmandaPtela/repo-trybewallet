@@ -2,11 +2,9 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from '../tests/helpers/renderWith';
-import storeGeral from '../redux/store';
 import App from '../App';
 import Wallet from '../pages/Wallet';
-// import Table from '../components/Table';
-import WalletForm from '../components/WalletForm';
+import mockData from '../tests/helpers/mockData';
 
 describe('Testa página de Login', () => {
   it('Verifica rota da página Login', () => {
@@ -67,17 +65,7 @@ describe('Verifica página Wallet', () => {
   });
 
   it('Verifica inputs da carteira', () => {
-    /* const expense = {
-      id: '0',
-      value: '2.00',
-      description: 'Descrição',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      editor: 'false',
-    }; */
-
-    renderWithRouterAndRedux(<WalletForm />);
+    renderWithRouterAndRedux(<Wallet />);
     const fetchApi = jest.fn();
 
     const botaoAddExpense = screen.getByText(/adicionar despesa/i);
@@ -105,19 +93,24 @@ describe('Verifica página Wallet', () => {
     expect(inputCurrency).toContainHTML('');
     expect(inputMethod).toContainHTML('');
     expect(inputTag).toContainHTML('');
-  });
-  it('Verifica Table', () => {
-    renderWithRouterAndRedux(<Wallet />);
-    const store = storeGeral.getState();
+
+    const initialStateMock = {
+      currencies: [Object.keys(mockData)],
+      expenses: [],
+      editor: false,
+      idToEdit: 0,
+      exchangeRates: mockData,
+    };
+    renderWithRouterAndRedux(<Wallet />, { initialState: initialStateMock });
     const titleTable = screen.getAllByRole('columnheader');
 
     expect(titleTable[0]).toBeInTheDocument();
     expect(titleTable[1]).toBeInTheDocument();
     expect(titleTable[2]).toBeInTheDocument();
     expect(titleTable[3]).toBeInTheDocument();
-    console.log(store);
+    console.log(initialStateMock);
     screen.logTestingPlaygroundURL();
-    expect(store.wallet.editor).toBe(false);
+    expect(initialStateMock.editor).toBe(false);
     /* const botaoEditar = screen.getByTestId('edit-btn')
     expect(botaoEditar).toBeInTheDocument(); */
 
