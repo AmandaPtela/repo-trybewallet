@@ -22,10 +22,7 @@ const editar = (id, dispatch) => {
   dispatch({ type: 'idToEdit', value: id });
 };
 
-const soma = (despesas, dispatch) => {
-  const lista = despesas.reduce((acc, i) => acc
-      + (i.value * i.exchangeRates[i.currency].ask), 0);
-  dispatch({ type: 'somaTotal', value: Number(lista).toFixed(2) });
-};
+const soma = (despesas) => despesas.reduce((acc, i) => acc
+    + (i.value * i.exchangeRates[i.currency].ask), 0).toFixed(2);
 
 export { remove, editar, soma };

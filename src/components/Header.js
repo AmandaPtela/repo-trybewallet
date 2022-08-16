@@ -8,6 +8,8 @@ import { soma } from '../testes/Functions';
 class Header extends React.Component {
   render() {
     const { user, despesas, dispatch } = this.props;
+    const somaTotal = soma(despesas, dispatch);
+    dispatch({ type: 'somaTotal', value: Number(somaTotal) });
     return (
       (user.length > 0)
         ? (
@@ -17,7 +19,7 @@ class Header extends React.Component {
               { user }
             </p>
             <span data-testid="total-field">
-              { Number(soma(despesas, dispatch)).toFixed(2) }
+              { Number(somaTotal).toFixed(2) }
             </span>
             <p data-testid="header-currency-field">BRL</p>
           </div>
